@@ -64,6 +64,7 @@ class GetForecastCommand extends Command
             $this->getSerializedForecasts($inputOutputHandler, $cities);
         } catch (\Exception $exception) {
             $inputOutputHandler->error($exception->getMessage());
+
             return Command::FAILURE;
         }
 
@@ -74,7 +75,8 @@ class GetForecastCommand extends Command
 
     /**
      * @param SymfonyStyle $inputOutputHandler
-     * @param City[] $cities
+     * @param City[]       $cities
+     *
      * @throws \Exception
      */
     protected function getSerializedForecasts(SymfonyStyle $inputOutputHandler, array $cities): void
@@ -93,6 +95,7 @@ class GetForecastCommand extends Command
 
     /**
      * @param ForecastDay[] $forecasts
+     *
      * @return string[]
      */
     protected function formatForecasts(array $forecasts): array
