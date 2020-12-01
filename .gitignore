@@ -23,6 +23,7 @@ symfony.lock
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
+build
 ###< phpunit/phpunit ###
 
 ###> squizlabs/php_codesniffer ###
