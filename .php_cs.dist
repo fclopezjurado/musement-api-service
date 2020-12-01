@@ -1,0 +1,48 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__)
+    ->exclude('var')
+    ->exclude('vendor')
+;
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@PhpCsFixer' => true,
+        '@PhpCsFixer:risky' => true,
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        'array_syntax' => [
+            'syntax' => 'short',
+        ],
+        'class_definition' => [
+            'multi_line_extends_each_single_line' => true,
+        ],
+        'concat_space' => [
+            'spacing' => 'one',
+        ],
+        'declare_strict_types' => true,
+        'no_extra_consecutive_blank_lines' => [
+            'break',
+            'continue',
+            'curly_brace_block',
+            'extra',
+            'parenthesis_brace_block',
+            'return',
+            'square_brace_block',
+            'throw',
+            'use',
+        ],
+        'php_unit_internal_class' => [],
+        'php_unit_test_case_static_method_calls' => false,
+        'php_unit_test_class_requires_covers' => false,
+        'phpdoc_annotation_without_dot' => false,
+        'no_superfluous_phpdoc_tags' => false,
+        'phpdoc_to_comment' => true,
+        'return_assignment' => false,
+        'single_line_throw' => false,
+        'ternary_to_null_coalescing' => true,
+    ])
+    ->setFinder($finder)
+    ->setLineEnding(PHP_EOL)
+;

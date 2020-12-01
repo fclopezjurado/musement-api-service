@@ -1,0 +1,10 @@
+services:
+    Tui\Musement\ApiService\Command\GetForecastCommand:
+        class: Tui\Musement\ApiService\Command\GetForecastCommand
+        arguments:
+          [
+              '@Tui\Musement\ApiClient\Infrastructure\Client\Http\HttpClient',
+              '@Tui\Weather\ApiClient\Infrastructure\Client\Http\HttpClient'
+          ]
+        tags:
+            - console.command
