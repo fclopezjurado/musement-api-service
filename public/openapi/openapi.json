@@ -1,0 +1,470 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Musement API",
+    "description": "Musement API",
+    "termsOfService": "https://www.musement.com/",
+    "contact": {
+      "email": "support@musement.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "3.5.0"
+  },
+  "servers": [
+    {
+      "url": "https://sandbox.musement.com/api/v3",
+      "description": "Sandbox server"
+    },
+    {
+      "url": "https://api.musement.com/api/v3",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/cities/{cityId}/forecast": {
+      "post": {
+        "tags": [
+          "city"
+        ],
+        "summary": "Create a city forecast",
+        "operationId": "PostCitiesCityIdForecast",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/X-Musement-Version"
+          },
+          {
+            "$ref": "#/components/parameters/Accept-Language"
+          },
+          {
+            "$ref": "#/components/parameters/cityId"
+          }
+        ],
+        "requestBody": {
+          "description": "City forecast post request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Forecasts"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned when successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forecasts"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if sent data contains errors"
+          },
+          "404": {
+            "description": "Returned when resource is not found"
+          },
+          "503": {
+            "description": "Returned when the service is unavailable"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "City"
+        ],
+        "summary": "Get city forecast. Returns the forest for today and tomorroy by default.",
+        "operationId": "GetCityForecast",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/X-Musement-Version"
+          },
+          {
+            "$ref": "#/components/parameters/Accept-Language"
+          },
+          {
+            "$ref": "#/components/parameters/cityId"
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "description": "Set filter by days using timestamps.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned when successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Forecasts"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No resource found"
+          },
+          "503": {
+            "description": "Service unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "City": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "top": {
+            "description": "Indicate if the event is a Musement 'top' event",
+            "type": "boolean"
+          },
+          "name": {
+            "description": "City name",
+            "type": "string"
+          },
+          "code": {
+            "description": "City code. Do not depends on locale",
+            "type": "string"
+          },
+          "content": {
+            "description": "Description",
+            "type": "string"
+          },
+          "meta_description": {
+            "description": "Meta-description",
+            "type": "string"
+          },
+          "meta_title": {
+            "description": "Meta-title",
+            "type": "string"
+          },
+          "headline": {
+            "description": "Headline",
+            "type": "string"
+          },
+          "more": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "integer"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "float"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "float"
+          },
+          "country": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "forecast": {
+            "$ref": "#/components/schemas/Forecast"
+          },
+          "cover_image_url": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "activities_count": {
+            "description": "Number of activities",
+            "type": "integer",
+            "x-msmFrom": "3.5.0"
+          },
+          "time_zone": {
+            "description": "City timezone",
+            "type": "string"
+          },
+          "list_count": {
+            "type": "integer"
+          },
+          "venue_count": {
+            "type": "integer"
+          },
+          "slug": {
+            "description": "The slug for the city. This value is taken from the name of the city, it can also be customized by the content team. Please note that this value can change within time",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "City"
+        }
+      },
+      "Forecasts": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Forecast"
+        }
+      },
+      "Forecast": {
+        "properties": {
+          "day": {
+            "description": "Literal with day associated to forecast. Timestamp",
+            "type": "integer",
+            "example": 1606762319
+          },
+          "forecast": {
+            "description": "Literal with city forecast for a day",
+            "type": "string",
+            "example": "Heavy rain"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "Forecast"
+        }
+      },
+      "Country": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "iso_code": {
+            "type": "string"
+          },
+          "country_prefix": {
+            "type": "string"
+          },
+          "currency_code": {
+            "description": "Our currency code for that Country - for United Stated its USD, for Great Britain its GBP etc",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "Country"
+        }
+      }
+    },
+    "responses": {
+      "404": {
+        "description": "Returned when resource is not found"
+      },
+      "503": {
+        "description": "Service unavailable"
+      }
+    },
+    "parameters": {
+      "Accept-Language": {
+        "name": "Accept-Language",
+        "in": "header",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "default": "en-US"
+        }
+      },
+      "X-Musement-Version": {
+        "name": "X-Musement-Version",
+        "in": "header",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "cityId": {
+        "name": "cityId",
+        "in": "path",
+        "description": "City identifier",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    },
+    "securitySchemes": {
+      "customer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "tokenUrl": "https://api.musement.com/api/v3/login",
+            "refreshUrl": "https://api.musement.com/api/v3/refresh",
+            "scopes": {
+              "customer:read": "Read customer data: profile data, information about the orders",
+              "customer:update": "Update customer data: profile data"
+            }
+          }
+        }
+      },
+      "content_manager": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "tokenUrl": "https://api.musement.com/api/v3/login",
+            "refreshUrl": "https://api.musement.com/api/v3/refresh",
+            "scopes": {
+              "supplier:admin": "Create and update supplier's info",
+              "activity:admin": "Create and update activit's info",
+              "market:admin": "Market administration"
+            }
+          }
+        }
+      },
+      "supplier": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "tokenUrl": "https://api.musement.com/api/v3/login",
+            "refreshUrl": "https://api.musement.com/api/v3/refresh",
+            "scopes": {
+              "activity:admin": "Create and update activity's info",
+              "invoice:admin": "Handle invoices",
+              "order:admin": "Confirm, cancel an order",
+              "profile": "Handle profile"
+            }
+          }
+        }
+      },
+      "merchant": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://api.musement.com/api/v3/login",
+            "refreshUrl": "https://api.musement.com/api/v3/refresh",
+            "scopes": {
+              "price": "Read ad hoc prices for an activity",
+              "no-payment": "Can use the 'no-payment' flow to pay an order"
+            }
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Musement API",
+    "url": "https://api-docs.musement.com/"
+  },
+  "x-tagGroups": [
+    {
+      "name": "Security",
+      "tags": [
+        "login"
+      ]
+    },
+    {
+      "name": "Activity",
+      "tags": [
+        "timeslot",
+        "refund-policies",
+        "metadata",
+        "itinerary",
+        "date",
+        "media",
+        "activity",
+        "comment",
+        "content",
+        "contact-form"
+      ]
+    },
+    {
+      "name": "Taxonomy",
+      "tags": [
+        "category",
+        "city",
+        "venue",
+        "vertical",
+        "country"
+      ]
+    },
+    {
+      "name": "Orders",
+      "tags": [
+        "order"
+      ]
+    },
+    {
+      "name": "Lists",
+      "tags": [
+        "list"
+      ]
+    },
+    {
+      "name": "Widgets",
+      "tags": [
+        "widget"
+      ]
+    },
+    {
+      "name": "Gifts",
+      "tags": [
+        "giftbox",
+        "gifting"
+      ]
+    },
+    {
+      "name": "Global",
+      "tags": [
+        "global"
+      ]
+    },
+    {
+      "name": "Cart",
+      "tags": [
+        "guest-customer",
+        "cart",
+        "participants-info",
+        "extra-customer-info"
+      ]
+    },
+    {
+      "name": "Supplier",
+      "tags": [
+        "supplier-registration",
+        "supplier-profile",
+        "supplier-order",
+        "supplier-activity",
+        "supplier-invoices",
+        "supplier"
+      ]
+    },
+    {
+      "name": "Customer",
+      "tags": [
+        "customer",
+        "customer_preferences"
+      ]
+    },
+    {
+      "name": "Payments",
+      "tags": [
+        "paypal-express",
+        "stripe",
+        "no-payment"
+      ]
+    },
+    {
+      "name": "Static Pages",
+      "tags": [
+        "page",
+        "page-category"
+      ]
+    }
+  ]
+}

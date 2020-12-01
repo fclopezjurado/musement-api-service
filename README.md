@@ -1,5 +1,10 @@
 # TUI Musement API service
 
+Author: Francisco Carlos López Jurado.
+Contact: Angela Maria Carsi
+
+NOTE: OpenAPI specs for Step 2 are in [openapi.json](public/openapi/openapi.json)
+
 Backend microservice that gets the list of the cities from Musement's API for each city gets the forecast for the next 2 days using http://api.weatherapi.com and print to STDOUT "Processed city [city name] | [weather today] - [wheather tomorrow]"
 
 ## Installation
